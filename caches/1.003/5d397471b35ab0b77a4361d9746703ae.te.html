@@ -1,0 +1,25 @@
+<header ref="header" class="title-f">
+    <div class="content df sa ac">
+      <div class="placeholder signed mobile-hidden cr555 font18">四月は君の嘘</div>
+      <nav class="links-nav df ac f1 mobile-hidden" ref="navigate" ref-id="<?=$hash;?>">
+        <a
+          ~prevent
+          :href="@paths[~index]"
+          :class="['link-nav df tc link cr666 font20', 'link-' + ~index, @currentIndex == ~index ? 'actived' : '']"
+          @click="@redirect(~index)"
+          ~for="link in links">
+          <i :class="['iconfont', @names[~index]]"></i>{{ ~link }}
+        </a>
+      </nav>
+      <nav class="links-nav df ac f1 pc-hidden" ref="navigate" ref-id="<?=$hash;?>">
+        <a
+          :class="['link-nav df tc link cr666 font20',
+          'link-' + ~index,
+          @currentIndex == ~index ? 'actived' : '']"
+          @click="@redirect(~index)"
+          ~for="link in links">
+          <i :class="['iconfont', @names[~index]]"></i>
+        </a>
+      </nav>
+    </div>
+  </header>

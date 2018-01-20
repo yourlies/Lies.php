@@ -1,0 +1,15 @@
+<div class="avatar title-f" ref="avatar" ref-id="<?=$hash;?>">
+    <div class="tc">
+      <div class="content"></div>
+      <div class="meta">
+        <div class="name">Lies In April</div>
+      </div>
+      <div class="private df tc">
+        <span class="crfff link"
+          @mouseleave="@recoverNotice"
+          @mouseenter="@noNotice">
+          {{ @privateNotice }}
+        </span>
+      </div>
+    </div>
+  </div>

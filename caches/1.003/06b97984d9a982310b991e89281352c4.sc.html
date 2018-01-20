@@ -1,0 +1,78 @@
+var container = new Lies({
+    id: 'container',
+    data () {
+      return {
+        comments: [],
+        nickname: '',
+        email: '',
+        website: '',
+        content: '',
+        validate: {
+          nickname: false,
+          email: false,
+          content: false,
+          website: true,
+        },
+      }
+    },
+    methods: {
+      valiNickname: function () {
+        if (this.nickname.trim() != '') {
+          this.updater({ 'validate.nickname': true });
+        } else {
+          this.updater({ 'validate.nickname': false });
+        }
+      },
+      valiEmail: function () {
+        if (this.email.match(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)) {
+          this.updater({ 'validate.email': true });
+        } else {
+          this.updater({ 'validate.email': false });
+        }
+      },
+      valiContent: function () {
+        if (this.content.trim() != '') {
+          this.updater({ 'validate.content': true })
+        } else {
+          this.updater({ 'validate.content': false })
+        }
+      },
+      submit: function () {
+        if (!this.validate.nickname
+          || !this.validate.content
+          || !this.validate.website
+          || !this.validate.email) {
+          return false;
+        }
+        var params = [];
+        params.push('nickname=' + this.nickname);
+        params.push('email=' + this.email);
+        params.push('website=' + this.website);
+        params.push('content=' + this.content);
+        var _this = this;
+        fetch('/board', {
+          method: 'post',
+          body: params.join('&'),
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        })
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (res) {
+          _this.updater({ comments: res });
+          _this.updater({ content: '' });
+          _this.updater({ 'validate.content': false });
+        })
+      }
+    }
+  });
+  new Refs(container,'06b9');
+  fetch('/board/comments')
+  .then(function (res) {
+    return res.json();
+  })
+  .then(function (res) {
+    container.updater({ 'comments': res })
+  })

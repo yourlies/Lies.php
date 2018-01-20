@@ -1,0 +1,43 @@
+var navigate = new Lies({
+    id: 'navigate',
+    data () {
+      return {
+        links: ['about', 'project', 'board', 'links'],
+        names: ['me', 'pj', 'ba', 'lk'],
+        paths: ['/', '/project', '/board', '/links', ''],
+        route: {
+          '/': 0,
+          '/project': 1,
+          '/board': 2,
+          '/links': 3,
+        },
+        currentIndex: 0,
+      }
+    },
+    methods: {
+      redirect: function (index) {
+        if (this.paths[index] == location.pathname) {
+          return false;
+        }
+        if (this.paths[index]) {
+          transition.start();
+          this.router.push({ path: this.paths[index] });
+          this.updater({ currentIndex: index });
+        }
+      } 
+    }
+  });
+  navigate.router = new Router({
+    app: '.container',
+    afterRedirect: function () {
+      transition.end();
+      if (self.state.$components.assistive
+        && self.state.$components.assistive.processor) {
+        self.state.$components.assistive.processor();
+      }
+      navigate.updater({ currentIndex: navigate.route[location.pathname] });
+    },
+  });
+  navigate.updater({ currentIndex: navigate.route[location.pathname] });
+  new Refs(navigate,'fdeb');
+  self.state.$components.navigate = navigate;

@@ -1,0 +1,43 @@
+var navi = self.state.$components.navigate;
+  var maps = {
+    p: function (path) {
+      if (!isNaN(path)) {
+        navi.router.push({ path: navi.paths[path] });
+      } else {
+        navi.router.push({ path: path });
+      }
+    }
+  }
+  var shell = new Lies({
+    id: 'shell',
+    data () {
+      return {
+        isOpen: false,
+        isFocus: false,
+        directive: '',
+      }
+    },
+    methods: {
+      processor: function (e) {
+        if (e.keyCode == 13 && !e.metaKey) {
+          var directives = this.directive.split(' ');
+          if (maps[directives[0]]) {
+            maps[directives[0]](directives[1]);
+            this.updater({ directive: '' });
+          }
+        }
+      }
+    }
+  });
+  new Refs(shell,'1791');
+  document.body.addEventListener('keydown', function (e) {
+    if (e.keyCode == 86 && e.shiftKey) {
+      shell.updater({ isOpen: !shell.isOpen });
+      setTimeout(function () {
+        shell.updater({
+          isFocus: !shell.isFocus,
+          directive: '',
+        });
+      }, 10);
+    }
+  });

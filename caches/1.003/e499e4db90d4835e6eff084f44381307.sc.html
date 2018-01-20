@@ -1,0 +1,12 @@
+var container = new Lies({
+    id: 'container',
+    data () {
+      return {
+        isFrontInfo: true,
+      }
+    }
+  });
+  new Refs(container,'e499');
+  state.$components.container = container;
+  <?php $script->assign('/User/avatar'); ?>
+  <?php $script->assign('/User/info'); ?>

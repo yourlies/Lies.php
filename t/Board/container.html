@@ -1,0 +1,284 @@
+<template>
+  <div class="container f1" ref="container">
+    <div class="right df tc">
+      <div class="content f1">
+        <div class="desc">
+          <p class="title-f desc-title">Too Simple Board v1.01</p>
+          <p class="font16 desc-comment">(Testing stage, comment would not insert to database)</p>
+          <p class="font16 desc-comment">Hey guys, now my website support friend links, if you wanna mutual follow, comment here please</p>
+        </div>
+        <div class="submit">
+          <div class="title">Send A Comment</div>
+          <div class="input-content df base mobile-hidden">
+            <input class="input title-f" placeholder="nickname" ~model="@nickname" @input="@valiNickname">
+            <div class="placeholder"></div>
+            <input class="input title-f" placeholder="email" ~model="@email" @input="@valiEmail">
+            <div class="placeholder"></div>
+            <input class="input title-f" placeholder="website" ~model="@website">
+          </div>
+          <div class="input-content pc-hidden base">
+            <input class="input title-f" placeholder="nickname" ~model="@nickname" @input="@valiNickname">
+          </div>
+          <div class="input-content pc-hidden base">
+            <input class="input" placeholder="email" ~model="@email" @input="@valiEmail">
+          </div>
+          <div class="input-content pc-hidden base">
+            <input class="input" placeholder="website" ~model="@website">
+          </div>
+          <div class="input-content">
+            <textarea
+              class="input title-f"
+              length="30"
+              ~model="@content"
+              @input="@valiContent"
+              placeholder="how are you indian mifans?"></textarea>
+          </div>
+          <div
+            :class="['btn',
+            'title-f',
+            @validate.nickname
+            && @validate.website
+            && @validate.email
+            && @validate.content
+              ? 'link' : 'disabled']"
+            @click="@submit">
+            submit
+          </div>
+        </div>
+        <ul class="comments">
+          <li ~for="comment in comments" class="comment df fc">
+            <div class="comment-meta df ac">
+              <div class="df tc">
+                <a
+                  ~fadebg="'https://secure.gravatar.com/avatar/'
+                  + ~comment.email
+                  + '?s=100&r=G&d='"
+                  class="avatar"></a>
+                <!-- <a class="avatar"></a> -->
+              </div>
+              <div class="df tc">
+                <span class="nickname title-f link">{{ ~comment.nickname }}</span>
+              </div>
+            </div>
+            <div class="comment-content">
+              <p>{{ ~comment.content }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  var container = new Lies({
+    id: 'container',
+    data () {
+      return {
+        comments: [],
+        nickname: '',
+        email: '',
+        website: '',
+        content: '',
+        validate: {
+          nickname: false,
+          email: false,
+          content: false,
+          website: true,
+        },
+      }
+    },
+    methods: {
+      valiNickname: function () {
+        if (this.nickname.trim() != '') {
+          this.updater({ 'validate.nickname': true });
+        } else {
+          this.updater({ 'validate.nickname': false });
+        }
+      },
+      valiEmail: function () {
+        if (this.email.match(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)) {
+          this.updater({ 'validate.email': true });
+        } else {
+          this.updater({ 'validate.email': false });
+        }
+      },
+      valiContent: function () {
+        if (this.content.trim() != '') {
+          this.updater({ 'validate.content': true })
+        } else {
+          this.updater({ 'validate.content': false })
+        }
+      },
+      submit: function () {
+        if (!this.validate.nickname
+          || !this.validate.content
+          || !this.validate.website
+          || !this.validate.email) {
+          return false;
+        }
+        var params = [];
+        params.push('nickname=' + this.nickname);
+        params.push('email=' + this.email);
+        params.push('website=' + this.website);
+        params.push('content=' + this.content);
+        var _this = this;
+        fetch('/board', {
+          method: 'post',
+          body: params.join('&'),
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        })
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (res) {
+          _this.updater({ comments: res });
+          _this.updater({ content: '' });
+          _this.updater({ 'validate.content': false });
+        })
+      }
+    }
+  });
+  new Refs(container);
+  fetch('/board/comments')
+  .then(function (res) {
+    return res.json();
+  })
+  .then(function (res) {
+    container.updater({ 'comments': res })
+  })
+</script>
+<style>
+  .content-bg {
+    z-index: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    opacity: .6;
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    padding: 30px;
+    margin-bottom: 140px;
+    width: 80%;
+  }
+  .desc {
+    background-color: #fff;
+    margin-bottom: 60px;
+    padding: 20px;
+    font-size: 18px;
+    color: #666;
+  }
+  .desc-title {
+    margin-bottom: 20px;
+  }
+  .desc-comment {
+    color: #999;
+  }
+  .comment {
+    background-color: #fff;
+    color: #666;
+  }
+  .comment-meta {
+    padding: 20px;
+    padding-left: 30px;
+  }
+  .comment-content {
+    margin: 0 30px;
+    margin-left: 80px;
+    border-bottom: 1px dashed #eaeaea;
+    padding-bottom: 15px;
+    text-align: left;
+    color: #666;
+  }
+  .avatar {
+    width: 60px;
+    height: 60px;
+    background-size: 60px;
+    border-radius: 60px;
+    box-shadow: 1px 2px 1px #888;
+    background-image: url(<?=ASSETS_PATH;?>/img/me.jpg);
+    margin-right: 15px;
+    position: relative;
+    top: 7px;
+  }
+  .nickname {
+    border-bottom: 1px dashed #aaa;
+  }
+  .nickname:hover {
+    color: rgba(5, 176, 255, 1);
+    border-bottom: 1px dashed rgba(5, 176, 255, 1);
+  }
+  .submit {
+    background-color: #fff;
+    padding-bottom: 20px;
+  }
+  .input-content {
+    padding: 0 30px;
+    margin-bottom: 10px;
+  }
+  .input {
+    border: 0;
+    resize: none;
+    background-color: #eee;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    border-radius: 3px;
+    font-size: 16px;
+  }
+  .base .input {
+    padding: 10px 20px;
+  }
+  .input-t {
+    margin-right: 10px;
+  }
+  .placeholder {
+    width: 20px;
+  }
+  .submit .title {
+    padding: 20px;
+    color: #666;
+    font-size: 18px;
+  }
+  .submit .btn {
+    background-color: #05b0ff;
+    margin: 0 30px;
+    padding: 10px;
+    border-radius: 3px;
+    color: #fff;
+  }
+  .submit .btn.disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  ul {
+    border-top: 2px dashed #eee;
+    margin: 0;
+  }
+  @media (max-width: 768px) {
+    .avatar {
+      width: 50px;
+      height: 50px;
+      background-size: 50px;
+      top: 0;
+    }
+    .comment-meta {
+      padding: 15px;
+      padding-left: 20px;
+    }
+    .comment-content {
+      margin-left: 40px;
+    }
+    .content {
+      padding: 30px 10px;
+      width: auto;
+    }
+    .desc {
+      margin-bottom: 30px;
+    }
+  }
+</style>

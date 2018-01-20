@@ -1,0 +1,96 @@
+<template>
+  <header ref="header" class="title-f">
+    <div class="content df sa ac">
+      <div class="placeholder signed mobile-hidden cr555 font18">四月は君の嘘</div>
+      <nav class="links-nav df ac f1 mobile-hidden" ref="navigate" ref-id="<?=$hash;?>">
+        <a
+          ~prevent
+          :href="@paths[~index]"
+          :class="['link-nav df tc link cr666 font20', 'link-' + ~index, @currentIndex == ~index ? 'actived' : '']"
+          @click="@redirect(~index)"
+          ~for="link in links">
+          <i :class="['iconfont', @names[~index]]"></i>{{ ~link }}
+        </a>
+      </nav>
+      <nav class="links-nav df ac f1 pc-hidden" ref="navigate" ref-id="<?=$hash;?>">
+        <a
+          :class="['link-nav df tc link cr666 font20',
+          'link-' + ~index,
+          @currentIndex == ~index ? 'actived' : '']"
+          @click="@redirect(~index)"
+          ~for="link in links">
+          <i :class="['iconfont', @names[~index]]"></i>
+        </a>
+      </nav>
+    </div>
+  </header>
+</template>
+<script>
+  var header = new Lies({
+    id: 'header',
+    data () {},
+  });
+  new Refs(header);
+</script>
+<style>
+  header {
+    position: relative;
+  }
+  .content {
+    height: 66px;
+    background-color: #fff;
+    border-bottom: 2px solid #cfcfcf;
+  }
+  nav {
+    padding: 0 50px;
+  }
+  .link-nav {
+    padding: 6px 12px;
+    align-items: center;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  .link-nav.actived {
+    color: rgba(5, 176, 255, 1);
+    background-color: rgba(5, 176, 255, .1);
+  }
+  .link-nav .iconfont {
+    width: 40px;
+    height: 40px;
+    background-size: 40px;
+    margin-right: 5px;
+  }
+  .iconfont.me {
+    background-image: url('<?=ASSETS_PATH;?>/img/me.png');
+  }
+  .iconfont.pj {
+    background-image: url('<?=ASSETS_PATH;?>/img/pj.png');
+  }
+  .iconfont.ba {
+    background-image: url('<?=ASSETS_PATH;?>/img/ba.png');
+  }
+  .iconfont.lk {
+    background-image: url('<?=ASSETS_PATH;?>/img/lk.png');
+  }
+  .placeholder {
+    width: 300px;
+    text-align: center;
+  }
+  @media (max-width: 768px) {
+    nav {
+      padding: 0 30px;
+    }
+    .content {
+      height: auto;
+    }
+    .link-nav .iconfont {
+      width: 45px;
+      height: 45px;
+      background-size: 45px;
+      margin: 0;
+    }
+    .link-nav {
+      padding: 10px 15px;
+    }
+  }
+</style>

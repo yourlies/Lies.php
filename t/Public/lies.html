@@ -1,0 +1,69 @@
+<template>
+  <div class="lies-shell mobile-hidden" ref="shell">
+    <div class="content df" ~if="@isOpen">
+      <input ~focus="@isFocus" class="f1 body-f" @keydown="@processor" ~model="@directive" />
+    </div>
+  </div>
+</template>
+<script>
+  var navi = self.state.$components.navigate;
+  var maps = {
+    p: function (path) {
+      if (!isNaN(path)) {
+        navi.router.push({ path: navi.paths[path] });
+      } else {
+        navi.router.push({ path: path });
+      }
+    }
+  }
+  var shell = new Lies({
+    id: 'shell',
+    data () {
+      return {
+        isOpen: false,
+        isFocus: false,
+        directive: '',
+      }
+    },
+    methods: {
+      processor: function (e) {
+        if (e.keyCode == 13 && !e.metaKey) {
+          var directives = this.directive.split(' ');
+          if (maps[directives[0]]) {
+            maps[directives[0]](directives[1]);
+            this.updater({ directive: '' });
+          }
+        }
+      }
+    }
+  });
+  new Refs(shell);
+  document.body.addEventListener('keydown', function (e) {
+    if (e.keyCode == 86 && e.shiftKey) {
+      shell.updater({ isOpen: !shell.isOpen });
+      setTimeout(function () {
+        shell.updater({
+          isFocus: !shell.isFocus,
+          directive: '',
+        });
+      }, 10);
+    }
+  });
+</script>
+<style>
+  .content {
+    z-index: 3;
+    position: fixed;
+    background-color: #000;
+    width: 100%;
+    opacity: .5;
+  }
+  input {
+    padding: 10px;
+    color: #fff;
+    outline: none;
+    background-color: #000;
+    border: 0;
+    font-size: 18px;
+  }
+</style>

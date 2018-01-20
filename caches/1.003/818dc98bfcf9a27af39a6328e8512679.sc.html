@@ -1,0 +1,17 @@
+var avatar = new Lies({
+    id: 'avatar',
+    data () {
+      return {
+        privateNotice: 'private letter',
+      }
+    },
+    methods: {
+      noNotice: function () {
+        this.updater({ privateNotice: 'to be continue' });
+      },
+      recoverNotice: function () {
+        this.updater({ privateNotice: 'private letter' });
+      }
+    }
+  });
+  new Refs(avatar,'818d');

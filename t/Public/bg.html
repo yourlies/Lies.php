@@ -1,0 +1,12 @@
+<template>
+  <div ref="bg">
+    <div class="container-bg" ~fade="<?=ASSETS_PATH;?>/img/me_bg.jpg"></div>
+  </div>
+</template>
+<script>
+  var bg = new Lies({
+    id: 'bg',
+    data () {}
+  });
+  new Refs(bg);
+</script>

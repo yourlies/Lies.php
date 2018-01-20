@@ -1,0 +1,105 @@
+<template>
+  <div class="container f1" ref="container">
+    <div class="right df tc">
+      <div class="content">
+        <a
+          target="_blank"
+          class="project df tc cr333"
+          href="//changlor.github.io/rain-wiki/dist/">
+          <div class="project-content">
+            <h2 class="title-f">Wiki Application</h2>
+            <time>2018-01-31</time>
+            <p>a wiki application based on vue</p>
+          </div>
+        </a>
+        <a target="_blank" class="project df tc cr333" href="//github.com/changlor/yuki-frame">
+          <div class="project-content">
+            <h2 class="title-f">Front End Engine</h2>
+            <time>2018-01-31</time>
+            <p>a front end framework in view of vue, avalon, etc</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  var container = new Lies({
+    id: 'container',
+    data () {},
+  });
+  new Refs(container);
+</script>
+<style>
+  .content-bg {
+    z-index: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    opacity: .6;
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    padding: 30px;
+    width: 80%;
+  }
+  .project {
+    padding: 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #cfcfcf;
+    border-right: 2px solid #cfcfcf;
+    border-radius: 5px;
+  }
+  .project h2 {
+    font-weight: 400;
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  .project-content {
+    width: 100%;
+  }
+  .project-content p {
+    color: #666;
+    font-size: 18px;
+    margin-top: 0;
+    padding: 20px 0;
+  }
+  time {
+    color: #05b0ff;
+    font-size: 16px;
+  }
+  @media (max-width: 768px) {
+    .content {
+      padding: 30px 10px;
+      width: auto;
+    }
+    .project {
+      justify-content: start !important;
+      -webkit-box-pack: start !important;
+      background-color: #fff;
+      text-align: left;
+      user-select: none;
+      padding: 20px;
+      padding-top: 30px;
+      margin-bottom: 15px;
+    }
+    .project h2 {
+      margin-top: 0;
+      margin-bottom: 3px;
+      padding-bottom: 2px;
+      font-size: 20px;
+    }
+    .project p {
+      color: #555;
+    }
+    .mobile-title {
+      padding-bottom: 2px;
+      border-bottom: 1px solid #888;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+  }
+</style>

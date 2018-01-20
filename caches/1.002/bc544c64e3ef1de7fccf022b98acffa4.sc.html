@@ -1,0 +1,37 @@
+var navigate = new Lies({
+    id: 'navigate',
+    data () {
+      return {
+        links: ['关于', '技术分享'],
+        names: ['me', 'pj'],
+        paths: ['/', '/project', '', '', ''],
+        route: {
+          '/': 0,
+          '/project': 1,
+        },
+        currentIndex: 0,
+      }
+    },
+    methods: {
+      redirect: function (index) {
+        if (this.paths[index]) {
+          transition.start();
+          this.router.push({ path: this.paths[index] });
+          this.updater({ currentIndex: index });
+        }
+      } 
+    }
+  });
+  navigate.router = new Router({
+    app: '.container',
+    afterRedirect: function () {
+      transition.end();
+      if (self.state.$components.assistive.processor) {
+        self.state.$components.assistive.processor();
+      }
+      navigate.updater({ currentIndex: navigate.route[location.pathname] });
+    },
+  });
+  navigate.updater({ currentIndex: navigate.route[location.pathname] });
+  new Refs(navigate,'bc54');
+  self.state.$components.navigate = navigate;

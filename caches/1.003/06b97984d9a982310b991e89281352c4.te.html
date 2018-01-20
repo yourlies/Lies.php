@@ -1,0 +1,69 @@
+<div class="container f1" ref="container">
+    <div class="right df tc">
+      <div class="content f1">
+        <div class="desc">
+          <p class="title-f desc-title">Too Simple Board v1.01</p>
+          <p class="font16 desc-comment">(Testing stage, comment would not insert to database)</p>
+          <p class="font16 desc-comment">Hey guys, now my website support friend links, if you wanna mutual follow, comment here please</p>
+        </div>
+        <div class="submit">
+          <div class="title">Send A Comment</div>
+          <div class="input-content df base mobile-hidden">
+            <input class="input title-f" placeholder="nickname" ~model="@nickname" @input="@valiNickname">
+            <div class="placeholder"></div>
+            <input class="input title-f" placeholder="email" ~model="@email" @input="@valiEmail">
+            <div class="placeholder"></div>
+            <input class="input title-f" placeholder="website" ~model="@website">
+          </div>
+          <div class="input-content pc-hidden base">
+            <input class="input title-f" placeholder="nickname" ~model="@nickname" @input="@valiNickname">
+          </div>
+          <div class="input-content pc-hidden base">
+            <input class="input" placeholder="email" ~model="@email" @input="@valiEmail">
+          </div>
+          <div class="input-content pc-hidden base">
+            <input class="input" placeholder="website" ~model="@website">
+          </div>
+          <div class="input-content">
+            <textarea
+              class="input title-f"
+              length="30"
+              ~model="@content"
+              @input="@valiContent"
+              placeholder="how are you indian mifans?"></textarea>
+          </div>
+          <div
+            :class="['btn',
+            'title-f',
+            @validate.nickname
+            && @validate.website
+            && @validate.email
+            && @validate.content
+              ? 'link' : 'disabled']"
+            @click="@submit">
+            submit
+          </div>
+        </div>
+        <ul class="comments">
+          <li ~for="comment in comments" class="comment df fc">
+            <div class="comment-meta df ac">
+              <div class="df tc">
+                <a
+                  ~fadebg="'https://secure.gravatar.com/avatar/'
+                  + ~comment.email
+                  + '?s=100&r=G&d='"
+                  class="avatar"></a>
+                <!-- <a class="avatar"></a> -->
+              </div>
+              <div class="df tc">
+                <span class="nickname title-f link">{{ ~comment.nickname }}</span>
+              </div>
+            </div>
+            <div class="comment-content">
+              <p>{{ ~comment.content }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
